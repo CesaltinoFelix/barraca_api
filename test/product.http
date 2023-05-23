@@ -1,0 +1,16 @@
+GET http://192.168.100.58:3000/products
+
+###
+
+GET http://192.168.100.58:3000/products/1
+
+###
+
+POST  http://192.168.100.58:3000/product 
+content-type: application/json
+ {
+    "name": "nike",
+    "price": 92367,
+    "img": "",
+    "description": "the best nike in the world",
+  }

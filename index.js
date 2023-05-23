@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const connection = require("./database/database"); 
 const Products = require("./database/Products");
+const users = require("./database/users");
 //Conectando com o banco de dados
 connection
     .authenticate()
@@ -21,7 +22,6 @@ app.use(bodyParser.json());
 
 // Rotas da plataforma
 app.get("/products",(req, res) => {
-    console.log('passou')
     Products.findAll({ raw: true, order:[
         ['id','DESC'] 
     ]}).then(products => {
@@ -52,38 +52,17 @@ console.log(req)
 
 app.get("/Products/:id",(req ,res) => {
     var id = req.params.id;
-    Pergunta.findOne({
+    Products.findOne({
         where: {id: id}
-    }).then(pergunta => {
-        if(pergunta != undefined){ 
+    }).then(Products => {
+        if(Products != undefined){ 
 
-            Resposta.findAll({
-                where: {perguntaId: pergunta.id},
-                order:[ 
-                    ['id','DESC'] 
-                ]
-            }).then(respostas => {
-                res.render("pergunta",{
-                    pergunta: pergunta,
-                    respostas: respostas
-                });
-            });
+            res.json(Products);
 
         }else{ // Dados não encontrado
             res.redirect("/");
         }
     });
 })
-
-app.post("/responder",(req, res) => {
-    var corpo = req.body.corpo;
-    var perguntaId = req.body.pergunta;
-    Resposta.create({
-        corpo: corpo,
-        perguntaId: perguntaId
-    }).then(() => {
-        res.redirect("/pergunta/"+perguntaId);
-    });
-});
 
 app.listen(3000, '192.168.100.58','192.168.100.51','192.168.100.1',()=>{console.log("Rodando na porta 3000!");})

@@ -1,0 +1,14 @@
+How to upload files in Node.js and Express
+
+https://attacomsian.com/blog/uploading-files-nodejs-express
+
+Note: see the tutorial to implement more feactures on our API.
+
+Here is what each of the above packages does:
+
+#express - Popular web framework built on top of Node.js. We shall use it for developing REST API.
+#body-parser - Node.js request body parsing middleware parses the incoming request body before your handlers and makes it available under the req.body property. In short, it simplifies incoming requests.
+#cors - Another Express middleware for enabling CORS (Cross-Origin Resource Sharing) requests.
+#express-fileupload - Simple Express middleware for uploading files. It parses multipart/form-data requests, extracts the files if available, and makes them available under the req.files property.
+#morgan - Node.js middleware for logging HTTP requests.
+#lodash - A JavaScript library that provides utility functions for arrays, numbers, objects, strings, etc.

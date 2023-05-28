@@ -79,7 +79,7 @@ app.get("/Products/:id",(req ,res) => {
 
 
 
-app.post('/upload-avatar', async (req, res) => {
+app.post('/upload-img', async (req, res) => {
     try {
         if(!req.files) {
             res.send({
@@ -87,7 +87,7 @@ app.post('/upload-avatar', async (req, res) => {
                 message: 'No file uploaded'
             });
         } else {
-            //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
+            //Use the name of the input field (i.e. "img") to retrieve the uploaded file
             let img = req.files.img;
             
             //Use the mv() method to place the file in the upload directory (i.e. "uploads")

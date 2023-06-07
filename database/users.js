@@ -6,7 +6,7 @@ const users = connection.define('users',{
         type: Sequelize.STRING,
         allowNull: false
     },
-    password:{
+    password:{ 
         type: Sequelize.STRING,
         allowNull: false
     },

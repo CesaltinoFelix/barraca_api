@@ -5,7 +5,7 @@ const sales = connection.define('sales',{
     userId:{
         type: Sequelize.INTEGER,
         allowNull: false
-    },
+    }, 
     productName:{
         type: Sequelize.STRING,
         allowNull: false

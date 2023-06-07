@@ -9,7 +9,7 @@ const Products = connection.define('product',{
     price:{
         type: Sequelize.FLOAT,
         allowNull: false
-    },
+    }, 
     img:{
         type: Sequelize.STRING,
         allowNull: false

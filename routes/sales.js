@@ -16,7 +16,7 @@ router.post("sales", (req, res) => {
     }).then((sale)=>{
         res.json(sale);
     })
-})
+}) 
 
 
 module.exports = router;

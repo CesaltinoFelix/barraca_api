@@ -19,7 +19,7 @@ router.post("/product",(req, res) => {
     var price = req.body.price;
     var description = req.body.description;
     var img = req.body.img;
-
+ 
     Products.create({
         name: name,
         price: price,

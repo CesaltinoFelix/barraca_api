@@ -10,7 +10,7 @@ const costumer = connection.define('costumers',{
     nif:{
         type: Sequelize.STRING,
         allowNull: false
-    },
+    }, 
     email:{
         type: Sequelize.STRING,
         allowNull: false

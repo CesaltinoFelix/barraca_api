@@ -7,7 +7,6 @@ const morgan = require('morgan');
 const _ = require('lodash');
 const connection = require("./database/database"); 
 const users = require("./database/users");
-const sales = require("./database/sales");
 
 // enable files upload
 app.use(fileUpload({
@@ -25,6 +24,7 @@ app.use(express.static('uploads'));
 const  products = require("./routes/products");
 const  uploads = require("./routes/uploads");
 const costumers = require("./routes/costumers");
+const sales = require("./routes/sales");
 //Conectando com o banco de dados
 connection
     .authenticate()
@@ -40,6 +40,7 @@ connection
 app.use("/", products)
 app.use("/", uploads)
 app.use("/", costumers)
+app.use("/", sales)
 
  
 

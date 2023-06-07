@@ -3,11 +3,11 @@ const sales = require("../database/sales");
 const router = express.Router();
 
 
-router.post("sales", (req, res) => {
-    const { name, price, quantity, img, userId, description } = req.body
+router.post("/sales", (req, res) => {
+    const { name, price, quantity, img, userId = 1, description } = req.body
 
     sales.create({
-        userId: '1',
+        userId: userId,
         productName: name,
         price: price,
         quantity: quantity,

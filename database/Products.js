@@ -20,6 +20,11 @@ const Products = connection.define('product',{
     }
 });
 
-Products.sync({force: false}).then(() => {});
+Products.sync({force: false}).then(() => {
+/* Products.create({ name: 'bread', price: '2222', img: '-1106222213790872442.jpg', description: 'the best nike in the world' });
+Products.create({ name: 'Nike', price: '222', img: 'IMG-20230525-WA0009.jpg', description: 'the best nike in the world' });
+Products.create({ name: 'bread', price: '2222', img: '-1106222213790872442.jpg', description: 'the best nike in the world' });
+Products.create({ name: 'Nike', price: '222', img: 'IMG-20230525-WA0009.jpg', description: 'the best nike in the world' }); */
+});
 
 module.exports = Products;

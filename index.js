@@ -6,7 +6,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const _ = require('lodash');
 const connection = require("./database/database"); 
-const users = require("./database/users");
+
 
 // enable files upload
 app.use(fileUpload({
@@ -25,6 +25,7 @@ const  products = require("./routes/products");
 const  uploads = require("./routes/uploads");
 const costumers = require("./routes/costumers");
 const sales = require("./routes/sales");
+const users = require("./routes/users");
 //Conectando com o banco de dados
 connection
     .authenticate()
@@ -41,12 +42,13 @@ app.use("/", products)
 app.use("/", uploads)
 app.use("/", costumers)
 app.use("/", sales)
+app.use("/", users)
 
  
 
 
-
-app.listen(3000, '192.168.100.51','192.168.100.51','192.168.100.1',
+// '10.0.0.118','localhost','192.168.100.1'
+app.listen(3000, ['localhost','10.0.0.118'],
 ()=>{
     console.log("Rodando na porta 3000!");
 });

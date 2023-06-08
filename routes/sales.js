@@ -18,5 +18,13 @@ router.post("/sales", (req, res) => {
     })
 }) 
 
+router.get("/sales",(req, res) => {
+    sales.findAll({ raw: true, order:[
+        ['id','DESC']  
+    ]}).then(sales => {
+           res.json(sales);
+    }); 
+});
+
 
 module.exports = router;

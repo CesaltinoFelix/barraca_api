@@ -15,10 +15,7 @@ router.get("/products",(req, res) => {
 
 router.post("/product",(req, res) => {
 
-    var name = req.body.name;
-    var price = req.body.price;
-    var description = req.body.description;
-    var img = req.body.img;
+    const {name, price, description = '', img} = req.body;
  
     Products.create({
         name: name,

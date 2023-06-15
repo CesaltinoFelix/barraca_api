@@ -12,12 +12,9 @@ router.get("/users",(req, res) => {
 });
 
 
-
-router.post("/login",(req, res) => {
-
-    var email = req.body.email;
-    var password = req.body.password;
-   
+router.get("/login/:email/:password",(req, res) => {
+    var email = req.params.email;
+    var password = req.params.password;
     users.findOne({
         where: {email: email, password: password}
     }).then(users => {
@@ -27,8 +24,27 @@ router.post("/login",(req, res) => {
         }else{ // Dados não encontrado
             res.status(401).send('Credenciais inválidas');
         }
-    });
+    }); 
 });
+
+
+
+/* router.post("/login",(req, res) => {
+
+    var email = req.body.email;
+    var password = req.body.password;
+   console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
+     users.findOne({
+        where: {email: email, password: password}
+    }).then(users => {
+        if(users != undefined){ 
+
+            res.json(users);
+        }else{ // Dados não encontrado
+            res.status(401).send('Credenciais inválidas');
+        }
+    }); 
+}); */
 
 router.post("/users",(req, res) => {
 

@@ -46,9 +46,7 @@ app.use("/", users)
 
  
 
-
-// '10.0.0.118','localhost','192.168.100.1'
-app.listen(3000, ['localhost','10.0.0.118'],
+app.listen(3000, ['10.0.0.118','192.168.41.154','192.168.100.51','10.0.0.118','localhost'],
 ()=>{
     console.log("Rodando na porta 3000!");
 });

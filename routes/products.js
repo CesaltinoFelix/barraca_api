@@ -3,21 +3,25 @@ const Products = require("../database/products");
 const router = express.Router();
 
 
-router.get("/products",(req, res) => {
+router.get("/products-user/:id",(req, res) => {
+    const id = req.params.id
     Products.findAll({ raw: true, order:[
         ['id','DESC']  
-    ]}).then(products => {
+    ],  where: {userId: id} }).then(products => {
            res.json(products);
     }); 
 });
 
 
 
-router.post("/product",(req, res) => {
+router.post("/product/:id",(req, res) => {
 
-    const {name, price, description = '', img} = req.body;
+    const {name, price, description = '',   } = req.body;
+    const img =   'product-box.jpg'
+    const id = req.params.id
  
     Products.create({
+        userId: id,
         name: name,
         price: price,
         description: description,
@@ -27,8 +31,25 @@ router.post("/product",(req, res) => {
         res.json(product)
     }); 
 });
+router.post("/product-update/:id",(req, res) => {
 
-router.get("/Products/:id",(req ,res) => {
+    const {name, price, description = '',   } = req.body;
+    const id = req.params.id
+
+     Products.update({ name: name,
+        price: price,
+        description: description,}, {
+        where: {
+          id: id
+        }
+      }).then((product) => {
+
+        res.json(product)
+    }); 
+
+});
+
+router.get("/products/:id",(req ,res) => {
     var id = req.params.id;
     Products.findOne({
         where: {id: id}
@@ -43,7 +64,7 @@ router.get("/Products/:id",(req ,res) => {
     });
 })
 
-router.delete("/Products/:id",(req ,res) => {
+router.delete("/products/:id",(req ,res) => {
     var id = req.params.id;
     Products.destroy({
         where: {id: id}

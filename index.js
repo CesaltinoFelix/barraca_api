@@ -26,6 +26,7 @@ const  uploads = require("./routes/uploads");
 const costumers = require("./routes/costumers");
 const sales = require("./routes/sales");
 const users = require("./routes/users");
+const invoice = require("./routes/invoice");
 //Conectando com o banco de dados
 connection
     .authenticate()
@@ -43,6 +44,7 @@ app.use("/", uploads)
 app.use("/", costumers)
 app.use("/", sales)
 app.use("/", users)
+app.use("/", invoice)
 
  
 

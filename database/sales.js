@@ -6,6 +6,10 @@ const sales = connection.define('sales',{
         type: Sequelize.INTEGER,
         allowNull: false
     }, 
+    invoiceId:{
+        type: Sequelize.INTEGER,
+        allowNull: false
+    }, 
     productName:{
         type: Sequelize.STRING,
         allowNull: false

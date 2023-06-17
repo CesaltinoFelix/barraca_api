@@ -31,7 +31,7 @@ router.post("/product/:id",(req, res) => {
         res.json(product)
     }); 
 });
-router.post("/product-update/:id",(req, res) => {
+router.put("/product-update/:id",(req, res) => {
 
     const {name, price, description = '',   } = req.body;
     const id = req.params.id

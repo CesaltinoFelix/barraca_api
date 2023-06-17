@@ -27,6 +27,7 @@ const costumers = require("./routes/costumers");
 const sales = require("./routes/sales");
 const users = require("./routes/users");
 const invoice = require("./routes/invoice");
+const message =require("./routes/message");
 //Conectando com o banco de dados
 connection
     .authenticate()
@@ -45,6 +46,7 @@ app.use("/", costumers)
 app.use("/", sales)
 app.use("/", users)
 app.use("/", invoice)
+app.use("/",message)
 
  
 

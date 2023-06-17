@@ -11,7 +11,43 @@ router.get("/costumers",(req, res) => {
     }); 
 });
 
- 
+router.get("/costumers/:id",(req,res)=>
+{
+    const id = req.params.id
+    costumer.findOne({raw:true,where:{id:id}}).then((response)=>
+    {
+        res.json(response)
+    }).catch((error)=>
+    {
+        console.log(error)
+    })
+}) 
+
+router.put("/costumers/:id",(req,res)=>
+{
+    const id = req.params.id;
+    const{name,nif,email,contact} =req.body;
+   
+    costumer.update(
+        {
+            name: name,
+            nif: nif,
+            email: email,
+            contact: contact
+        },{
+            where:
+            {
+                id:id
+
+            }
+        
+        }).then((costumer)=>
+        {
+            res.json(costumer)
+
+        })
+   
+})
 
 router.post("/costumers",(req, res) => {
 
@@ -30,6 +66,25 @@ router.post("/costumers",(req, res) => {
     }); 
 });
 
+router.delete("/costumers/:id",(req,res)=>
+{
+
+  var id = req.params.id
+  
+  costumer.destroy({
+    where :{id:id}
+  }).then((response)=>
+  {
+    res.json(response)
+  }).catch((error)=>
+  {
+    console.log(error)
+  })
+
+
+
+})
+,
 
 
 

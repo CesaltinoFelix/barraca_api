@@ -28,6 +28,7 @@ const sales = require("./routes/sales");
 const users = require("./routes/users");
 const invoice = require("./routes/invoice");
 const message =require("./routes/message");
+const email = require("./routes/email")
 //Conectando com o banco de dados
 connection
     .authenticate()
@@ -47,6 +48,7 @@ app.use("/", sales)
 app.use("/", users)
 app.use("/", invoice)
 app.use("/",message)
+app.use("/",email)
 
  
 

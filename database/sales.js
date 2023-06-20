@@ -30,6 +30,10 @@ const sales = connection.define('sales',{
         type: Sequelize.STRING,
         allowNull: false
     },
+    wallet:{
+        type: Sequelize.STRING,
+        allowNull: false
+    }
     
 });
 

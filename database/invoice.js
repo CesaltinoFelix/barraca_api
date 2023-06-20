@@ -10,6 +10,11 @@ const invoice = connection.define('invoice',{
         type: Sequelize.STRING,
         allowNull: false
     },
+    nFatura:{
+        type: Sequelize.STRING,
+        allowNull: false
+    }
+
    
 });
 

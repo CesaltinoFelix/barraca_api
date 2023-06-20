@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 router.post("/sales", (req, res) => {
-    const { name, price, quantity, img, userId , description } = req.body
+    const { name, price, quantity, img, userId , description,wallet } = req.body
 
     sales.create({
         userId: userId,
@@ -13,7 +13,8 @@ router.post("/sales", (req, res) => {
         price: price,
         quantity: quantity,
         description: description,
-        img: img
+        img: img,
+        wallet:wallet
     }).then((sale)=>{
         const minhaImpressora = new printer();
         const faturaExemplo = {

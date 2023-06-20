@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 router.post("/sales", (req, res) => {
-    const { name, price, quantity, img, userId , description } = req.body
+    const { name, price, quantity, img, userId , description, invoiceId = 1 } = req.body
 
     sales.create({
         userId: userId,
@@ -13,22 +13,30 @@ router.post("/sales", (req, res) => {
         price: price,
         quantity: quantity,
         description: description,
-        img: img
+        img: img,
+        invoiceId: invoiceId
     }).then((sale)=>{
-        const minhaImpressora = new printer();
-        const faturaExemplo = {
-            numero: '2023001',
-            data: '09/06/2023',
-            itens: [
-              { descricao: 'Produto 1', quantidade: 2, precoUnitario: 10.50, total: 21 },
-              { descricao: 'Produto 2', quantidade: 1, precoUnitario: 15.75, total: 15.75 },
-              { descricao: 'Produto 3', quantidade: 3, precoUnitario: 8.90, total: 26.70 }
-            ],
-            total: 63.45
-          };
-          console.log('passou aqui')
-          minhaImpressora.gerarFatura(faturaExemplo);
         res.json(sale);
+    })
+}) 
+router.post("/sale-invoice/:codigoFatura", async (req, res) => {
+    sales.findAll({
+       
+    }).then((sale)=>{
+       const dadosVenda = req.body.data
+       const codigoFatura = req.params.codigoFatura
+        const minhaImpressora = new printer();
+  const dataFatura = _dataAtual();
+        const dadosFatura = {
+            numero: '2023001',
+            data: dataFatura,
+            itens: 
+                dadosVenda,
+            total: dadosVenda.reduce((total, item) => total + item.total, 0)
+          };
+          minhaImpressora.gerarFatura(dadosFatura, codigoFatura);
+          const outputFilename = `./uploads/fatura_${codigoFatura}.pdf`;
+        res.json(outputFilename);
     })
 }) 
 
@@ -40,5 +48,24 @@ router.get("/sales",(req, res) => {
     }); 
 });
 
+function _dataAtual() {
+    const dataAtual = new Date();
+
+    // Obtendo os valores do dia, mês e ano
+    const dia = dataAtual.getDate();
+    const mes = dataAtual.getMonth() + 1; // Os meses são indexados a partir de 0, por isso é adicionado 1
+    const ano = dataAtual.getFullYear();
+
+    // Formatando a data no formato dd/mm/aaaa
+    const dataFormatada = `${dia.toString().padStart(2, '0')}/${mes.toString().padStart(2, '0')}/${ano}`;
+
+    return dataFormatada; // Retornar a data formatada
+}
+
+
+
+
+
 
 module.exports = router;
+

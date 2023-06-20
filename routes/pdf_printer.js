@@ -2,12 +2,12 @@ const PDFDocument = require('pdfkit');
 const fs = require('fs');
 class Printer {
     // Função para gerar a fatura
- gerarFatura(fatura) {
+ gerarFatura(fatura, codigoFatura) {
     // Cria um novo documento PDF
     const doc = new PDFDocument();
   
     // Define o caminho e o nome do arquivo de saída
-    const outputFilename = './uploads/fatura.pdf';
+    const outputFilename = `./uploads/fatura_${codigoFatura}.pdf`;
   
     // Cabeçalho da fatura
     doc.fontSize(18).text('Fatura', { align: 'center' });

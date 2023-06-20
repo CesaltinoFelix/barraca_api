@@ -16,11 +16,12 @@ router.get("/invoice-user/:id",(req, res) => {
 
 router.post("/invoice",(req, res) => {
 
-    const {clientName, nif,    } = req.body;
+    const {clientName, nif, nFatura   } = req.body;
  
     invoice.create({
         clientName: clientName,
         nif: nif,
+        nFatura:nFatura
     }).then((invoice) => {
 
         res.json(invoice)

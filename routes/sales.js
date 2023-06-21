@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 router.post("/sales", (req, res) => {
-    const { name, price, quantity, img, userId , description, invoiceId = 1 } = req.body
+    const { name, price, quantity, img, userId , description, invoiceId = 1,wallet } = req.body
 
     sales.create({
         userId: userId,
@@ -14,7 +14,8 @@ router.post("/sales", (req, res) => {
         quantity: quantity,
         description: description,
         img: img,
-        invoiceId: invoiceId
+        invoiceId: invoiceId,
+        wallet:wallet
     }).then((sale)=>{
         res.json(sale);
     })

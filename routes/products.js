@@ -16,7 +16,7 @@ router.get("/products-user/:id",(req, res) => {
 
 router.post("/product/:id",(req, res) => {
 
-    const {name, price, description = '',   } = req.body;
+    const {name, price, description = ''} = req.body;
     const img =   'product-box.jpg'
     const id = req.params.id
  
@@ -26,6 +26,7 @@ router.post("/product/:id",(req, res) => {
         price: price,
         description: description,
         img: img
+       
     }).then((product) => {
 
         res.json(product)

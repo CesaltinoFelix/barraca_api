@@ -10,7 +10,7 @@ const invoice = connection.define('invoice',{
         type: Sequelize.STRING,
         allowNull: false
     },
-    nFatura:{
+    invoiceNumber:{
         type: Sequelize.STRING,
         allowNull: false
     }

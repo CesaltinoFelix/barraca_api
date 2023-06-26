@@ -4,11 +4,23 @@ const router = express.Router();
 
 
 router.get("/costumers",(req, res) => {
+   
+   try
+   {
     costumer.findAll({ raw: true, order:[
         ['id','DESC']  
     ]}).then(costumers => {
            res.json(costumers);
-    }); 
+    });
+   }
+   catch(error)
+   {
+        res.writeHead(500)
+        
+   }
+
+
+    
 });
 
 router.get("/costumers/:id",(req,res)=>

@@ -6,6 +6,23 @@ const cors = require('cors');
 const morgan = require('morgan');
 const _ = require('lodash');
 const connection = require("./database/database"); 
+const { once } = require('events');
+
+
+
+async function handler(request, response) {
+    try {
+      const data = JSON.parse(await once(request, 'data'));
+      console.log('\nreceived', data);
+      response.writeHead(200);
+      response.end(JSON.stringify(data));
+    } catch (error) {
+      console.error('erro ocorreu \n', error.stack);
+      response.writeHead(500);
+      response.end();
+    }
+  }
+
 
 
 // enable files upload
@@ -54,5 +71,23 @@ app.use("/",email)
 
 app.listen(3000, ['10.0.0.118','192.168.100.50','192.168.12.154','localhost'],
 ()=>{
-    console.log("Rodando na porta 3000!");
+    console.log(`Servidor rodando na porta 3000 processo: ${process.pid}`);
+//    handler()
 });
+
+
+
+
+process.on('SIGTERM',()=>
+{   console.log('servidor encerrando')
+    server.close(()=>{process.exit()})
+})
+
+process.on('uncaughtException',(error,origin) =>
+{
+    console.log(`Ocorreu algum erro! \n Erro : ${error}\n Origem: ${origin}`)
+})
+process.on('unhandledRejection',(error)=>
+{
+    console.log(`Ocorreu alugm erro! \nErro:${error}`)
+})

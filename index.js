@@ -77,9 +77,6 @@ app.listen(3000, ['10.0.0.118','192.168.41.154','192.168.100.56','192.168.12.154
 
 
 
- setTimeout(() => {
-    process.exit(1)
- }, Math.random()*1e4);
 
 process.on('SIGTERM',()=>
 {   console.log('servidor encerrando')

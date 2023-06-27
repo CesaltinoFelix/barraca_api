@@ -69,7 +69,7 @@ app.use("/",email)
 
  
 
-app.listen(3000, ['10.0.0.118','192.168.41.154','192.168.100.56','192.168.12.154','localhost'],
+app.listen(3000, ['10.0.0.118','192.168.100.50','192.168.12.154','localhost'],
 ()=>{
     console.log(`Servidor rodando na porta 3000 processo: ${process.pid}`);
 //    handler()

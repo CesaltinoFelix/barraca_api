@@ -1,78 +1,65 @@
 const express = require("express");
 const users = require("../database/users");
+const UserValidator = require("../middleware/UserValidator");
 const router = express.Router();
 
 
-router.get("/users",(req, res) => {
-    users.findAll({ raw: true, order:[
-        ['id','DESC']  
-    ]}).then(users => {
-           res.json(users);
-    }); 
+// Route handler using async/await and data validation
+router.get("/users", async (req, res) => {
+  try {
+    const usersList = await users.findAll({ raw: true, order: [["id", "DESC"]] });
+    res.json(usersList);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
-
-router.get("/login/:email/:password",(req, res) => {
-    var email = req.params.email;
-    var password = req.params.password;
-    users.findOne({
-        where: {email: email, password: password}
-    }).then(users => {
-        if(users != undefined){ 
-
-            res.json(users);
-        }else{ // Dados não encontrado
-            res.status(401).send('Credenciais inválidas');
-        }
-    }); 
+router.get("/login/:email/:password", async (req, res) => {
+  try {
+    const { email, password } = req.params;
+    const user = await users.findOne({ where: { email, password } });
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(401).send("Invalid credentials");
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
-router.post("/users",(req, res) => {
-
-    console.log(req.body)
-    var email = req.body.email;
-    var password = req.body.password;
-    var img = req.body.img ? req.body.img : '' ;
-    var entityId = req.body.entityId;
-    var name = req.body.name;
-   
-    users.create({
-        name: name,
-        email: email,
-        password: password,
-        img: img,
-        entityId: entityId,
-    }).then((user) => {
-
-        res.json(user)
-    }); 
+router.post("/users", UserValidator.validateUserData, async (req, res) => {
+  try {
+    const { email, password, img = "", entityId, name } = req.body;
+    const newUser = await users.create({ name, email, password, img, entityId });
+    res.json(newUser);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
-router.get("/users/:id",(req ,res) => {
-    var id = req.params.id;
-    users.findOne({
-        where: {id: id}
-    }).then(users => {
-        if(users != undefined){ 
+router.get("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await users.findOne({ where: { id } });
+    if (user) {
+      res.json(user);
+    } else {
+      res.redirect("/");
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
-            res.json(users);
-
-        }else{ // Dados não encontrado
-            res.redirect("/");
-        }
-    });
-})
-
-router.delete("/users/:id",(req ,res) => {
-    var id = req.params.id;
-    users.destroy({
-        where: {id: id}
-    }).then((user) => {
-
-        res.json(user)
-    }); 
-})
-
-
+router.delete("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedUser = await users.destroy({ where: { id } });
+    res.json(deletedUser);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 module.exports = router;

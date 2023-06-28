@@ -13,6 +13,15 @@ const invoice = connection.define('invoice',{
     invoiceNumber:{
         type: Sequelize.STRING,
         allowNull: false
+    },
+    status:{
+        type: Sequelize.STRING,
+        allowNull: false
+    
+    },
+    paymentStatus:{
+        type: Sequelize.STRING,
+        allowNull: false
     }
 
    

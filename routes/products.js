@@ -16,13 +16,15 @@ router.get("/products-user/:id",(req, res) => {
 
 router.post("/product/:id",(req, res) => {
 
-    const {name, price, description = ''} = req.body;
+    const {name, price, description = '',barcode = ''} = req.body;
     const img =   'product-box.jpg'
+    console.log(req.body);
     const id = req.params.id
  
     Products.create({
         userId: id,
         name: name,
+        barcode: barcode,
         price: price,
         description: description,
         img: img
@@ -34,12 +36,15 @@ router.post("/product/:id",(req, res) => {
 });
 router.put("/product-update/:id",(req, res) => {
 
-    const {name, price, description = '',   } = req.body;
+    const {name, price, description = '', barcode =''  } = req.body;
     const id = req.params.id
 
-     Products.update({ name: name,
+     Products.update({ 
+        name: name,
         price: price,
-        description: description,}, {
+        description: description,
+        barcode: barcode
+    }, {
         where: {
           id: id
         }

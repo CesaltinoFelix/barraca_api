@@ -1,5 +1,12 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize(
+const sequelize = new Sequelize('barraca','root','', {
+    host: 'localhost',
+    dialect: 'mysql'
+}); 
+
+
+/*
+const connection = new Sequelize(
 {
     username: 'postgres',
     password: 'mfalsolution',
@@ -7,13 +14,6 @@ const sequelize = new Sequelize(
     host: 'localhost',
     dialect: 'postgres'
 })
-
-
-/*
-const connection = new Sequelize('barraca','root','', {
-    host: 'localhost',
-    dialect: 'mysql'
-}); 
 */
 
 //module.exports = { sq: sequelize, testDbConnection };

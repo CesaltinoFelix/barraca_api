@@ -10,6 +10,10 @@ const Products = connection.define('product',{
         type: Sequelize.STRING,
         allowNull: false
     },
+    barcode:{
+        type: Sequelize.STRING,
+        allowNull: false
+    },
     price:{
         type: Sequelize.FLOAT,
         allowNull: false

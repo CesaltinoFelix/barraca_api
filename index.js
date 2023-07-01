@@ -84,7 +84,7 @@ io.on('connection', (socket) => {
 
 // Iniciando o servidor
 const PORT = 3000; // Porta desejada
-server.listen(PORT, ['10.0.0.118','192.168.100.52','192.168.21.154','localhost'], () => {
+server.listen(PORT, ['10.0.0.118','192.168.100.57','192.168.21.154','localhost'], () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
 

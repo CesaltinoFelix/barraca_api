@@ -19,6 +19,10 @@ const costumer = connection.define('costumers',{
         type: Sequelize.STRING,
         allowNull: false
     },
+    adress:{
+        type: Sequelize.STRING,
+        allowNull: false
+    },
     
 });
 

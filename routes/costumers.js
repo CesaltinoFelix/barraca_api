@@ -38,14 +38,15 @@ router.get("/costumers/:id",(req,res)=>
 router.put("/costumers/:id",(req,res)=>
 {
     const id = req.params.id;
-    const{name,nif,email,contact} =req.body;
+    const{name,nif,email,contact, adress} =req.body;
    
     costumer.update(
         {
             name: name,
             nif: nif,
             email: email,
-            contact: contact
+            contact: contact,
+            adress: adress,
         },{
             where:
             {
@@ -66,12 +67,14 @@ router.post("/costumers",(req, res) => {
     var name = req.body.name;
     var email = req.body.email;
     var nif = req.body.nif;
+    var adress = req.body.adress;
     var contact = req.body.contact;
 
     costumer.create({
         name: name,
         nif: nif,
         email: email,
+        adress: adress,
         contact: contact
     }).then((costumer) => {
         res.json(costumer)

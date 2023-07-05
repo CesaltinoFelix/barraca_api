@@ -2,12 +2,12 @@
 const Sequelize = require('sequelize');
 const fs = require('fs')
 const path = require('path');
-/*const sequelize = new Sequelize('barraca','root','', {
+const sequelize = new Sequelize('barraca','root','', {
     host: 'localhost',
     dialect: 'mysql'
 }); 
-*/
-const sslCertPath = path.resolve(__dirname, 'DigiCertGlobalRootCA.crt.pem');
+
+/* const sslCertPath = path.resolve(__dirname, 'DigiCertGlobalRootCA.crt.pem');
 
 const connection = new Sequelize(
 {
@@ -21,11 +21,11 @@ const connection = new Sequelize(
     },
     dialect: 'postgres'
 })
-
+ */
 
 //module.exports = { sq: sequelize, testDbConnection }; ssl:{ca:fs.readFileSync("{pg_hba.conf}")},
-//module.exports = sequelize;
-module.exports = connection;
+module.exports = sequelize;
+// module.exports = connection;
 
 /* 
 const connection = new Sequelize(

@@ -17,6 +17,7 @@ router.get("/users", async (req, res) => {
 router.get("/login/:email/:password", async (req, res) => {
   try {
     const { email, password } = req.params;
+    console.log(email , password)
     const user = await users.findOne({ where: { email, password } });
     if (user) {
       res.json(user);

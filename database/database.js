@@ -1,5 +1,6 @@
 
 const Sequelize = require('sequelize');
+const path = require('path')
 const fs = require('fs')
 const path = require('path');
 const sequelize = new Sequelize('barraca','root','', {
@@ -9,6 +10,9 @@ const sequelize = new Sequelize('barraca','root','', {
 
 /* const sslCertPath = path.resolve(__dirname, 'DigiCertGlobalRootCA.crt.pem');
 
+
+
+/*
 const connection = new Sequelize(
 {
     username: 'Reginaldo',
@@ -17,7 +21,9 @@ const connection = new Sequelize(
     host: 'barracaserver.postgres.database.azure.com',
     port:5432,  
     ssl: {
-        rejectUnauthorized: false
+        rejectUnauthorized: false,
+       
+        
     },
     dialect: 'postgres'
 })

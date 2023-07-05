@@ -60,7 +60,7 @@ connection
 app.use("/", products);
 app.use("/", uploads);
 app.use("/", costumers);
-app.use("/", sales);
+app.use("/", );
 app.use("/", users);
 app.use("/", invoice);
 app.use("/", message);

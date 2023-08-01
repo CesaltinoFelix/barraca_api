@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/85b062f0-f9e4-4c67-8ffe-435ccbf1d470/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/barracaapi",
+    "appService.deploySubpath": "."
+}

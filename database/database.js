@@ -2,14 +2,13 @@
 const Sequelize = require('sequelize');
 const path = require('path')
 const fs = require('fs')
-const caminho = path.resolve(__dirname,'DigiCertGlobalRootCA.crt (1).pem')
-
 
 
 const sequelize = new Sequelize('barraca','root','', {
     host: 'localhost',
     dialect: 'mysql'
 }); 
+
 
 /*
 const sequelize = new Sequelize('barraca','barracabd','naldo_2019', {
@@ -20,6 +19,10 @@ const sequelize = new Sequelize('barraca','barracabd','naldo_2019', {
 }); 
 
 */
+
+/* const sslCertPath = path.resolve(__dirname, 'DigiCertGlobalRootCA.crt.pem');
+
+>>>>>>> c4177d159fe92702357cec586bd8225cb260356b
 
 
 /*
@@ -37,11 +40,15 @@ const connection = new Sequelize(
     },
     dialect: 'postgres'
 })
+<<<<<<< HEAD
 
 */
 //module.exports = { sq: sequelize, testDbConnection }; ssl:{ca:fs.readFileSync("{pg_hba.conf}")},
 module.exports = sequelize;
 //module.exports = connection;
+
+
+//module.exports = { sq: sequelize, testDbConnection }; ssl:{ca:fs.readFileSync("{pg_hba.conf}")},
 
 /* 
 const connection = new Sequelize(

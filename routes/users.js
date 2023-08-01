@@ -18,6 +18,7 @@ router.get("/users", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
+
     const { email, password } = req.body;
 
     
@@ -26,6 +27,12 @@ router.post("/login", async (req, res) => {
   // var data = JSON.stringify(user);
     //  console.log(data)
     
+
+    const { email, password } = req.params;
+    
+    
+    const user = await users.findOne({ where: { email, password } });
+
     if (user) {
    
       let senhaCriptografada = user.password

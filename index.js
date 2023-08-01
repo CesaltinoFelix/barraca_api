@@ -71,7 +71,11 @@ connection
 app.use("/", products);
 app.use("/", uploads);
 app.use("/", costumers);
+<<<<<<< HEAD
 app.use("/",sales);
+=======
+app.use("/", );
+>>>>>>> c4177d159fe92702357cec586bd8225cb260356b
 app.use("/", users);
 app.use("/", invoice);
 app.use("/", message);

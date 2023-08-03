@@ -1,9 +1,9 @@
 const express = require("express");
 const costumer = require("../database/costumer");
 const router = express.Router();
+const auth = require('../middleware/auth')
 
-
-router.get("/costumers",(req, res) => {
+router.get("/costumers",auth.verifyToken,(req, res) => {
    
    try
    {
@@ -23,7 +23,7 @@ router.get("/costumers",(req, res) => {
     
 });
 
-router.get("/costumers/:id",(req,res)=>
+router.get("/costumers/:id",auth.verifyToken,(req,res)=>
 {
     const id = req.params.id
     costumer.findOne({raw:true,where:{id:id}}).then((response)=>
@@ -35,7 +35,7 @@ router.get("/costumers/:id",(req,res)=>
     })
 }) 
 
-router.put("/costumers/:id",(req,res)=>
+router.put("/costumers/:id",auth.verifyToken,(req,res)=>
 {
     const id = req.params.id;
     const{name,nif,email,contact, adress} =req.body;
@@ -62,7 +62,7 @@ router.put("/costumers/:id",(req,res)=>
    
 })
 
-router.post("/costumers",(req, res) => {
+router.post("/costumers",auth.verifyToken,(req, res) => {
 
     var name = req.body.name;
     var email = req.body.email;
@@ -81,7 +81,7 @@ router.post("/costumers",(req, res) => {
     }); 
 });
 
-router.delete("/costumers/:id",(req,res)=>
+router.delete("/costumers/:id",auth.verifyToken,(req,res)=>
 {
 
   var id = req.params.id

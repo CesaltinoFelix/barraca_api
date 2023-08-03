@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const nodemailer = require("nodemailer");
+const auth = require('../middleware/auth')
 
-
-router.post('/email',(req,res)=>
+router.post('/email',auth.verifyToken,(req,res)=>
 {
      const {message,destinatario,assunto}=req.body
     const transporter = nodemailer.createTransport({

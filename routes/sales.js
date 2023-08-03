@@ -2,9 +2,9 @@ const express = require("express");
 const sales = require("../database/sales");
 const printer = require("./pdf_printer");
 const router = express.Router();
+const auth = require('../middleware/auth')
 
-
-router.post("/sales", (req, res) => {
+router.post("/sales",auth.verifyToken, (req, res) => {
     const { name, price, quantity, img, userId , description, invoiceId = 1,wallet } = req.body
 
     sales.create({
@@ -20,7 +20,7 @@ router.post("/sales", (req, res) => {
         res.json(sale);
     })
 }) 
-router.post("/sale-invoice/:codigoFatura", async (req, res) => {
+router.post("/sale-invoice/:codigoFatura",auth.verifyToken, async (req, res) => {
     sales.findAll({
        
     }).then((sale)=>{
@@ -41,7 +41,7 @@ router.post("/sale-invoice/:codigoFatura", async (req, res) => {
     })
 }) 
 
-router.get("/sales",(req, res) => {
+router.get("/sales",auth.verifyToken,(req, res) => {
     sales.findAll({ raw: true, order:[
         ['id','DESC']  
     ]}).then(sales => {

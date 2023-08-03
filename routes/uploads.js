@@ -1,11 +1,11 @@
 const express = require("express");
 const Products = require("../database/products");
 const router = express.Router();
+const auth = require('../middleware/auth')
 
 
 
-
-router.post('/upload-img/:id', async (req, res) => {
+router.post('/upload-img/:id',auth.verifyToken, async (req, res) => {
     try {
         if(!req.files) {
             res.send({

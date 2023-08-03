@@ -30,15 +30,15 @@ app.use(fileUpload({
   createParentPath: true
 }));
 
-// limit of request
+// limite de requisições por endereço IP
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // 100 solicitações a cada 15min (15 minutos)
+  windowMs: 1 * 60 * 1000, // 15 minutos
+  max: 50, // 100 solicitações a cada 15min (15 minutos)
 });
 
 
-// add other middleware
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -71,11 +71,9 @@ connection
 app.use("/", products);
 app.use("/", uploads);
 app.use("/", costumers);
-<<<<<<< HEAD
+
 app.use("/",sales);
-=======
-app.use("/", );
->>>>>>> c4177d159fe92702357cec586bd8225cb260356b
+
 app.use("/", users);
 app.use("/", invoice);
 app.use("/", message);

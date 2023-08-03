@@ -1,113 +1,66 @@
 const express = require("express");
 const users = require("../database/users");
 const UserValidator = require("../middleware/UserValidator");
+const auth = require('../middleware/auth')
 const bcrypt = require('bcrypt');
 const router = express.Router();
-
+const userService = require("../services/userService");
 
 // Route handler using async/await and data validation
 
-router.get("/users", async (req, res) => {
-  try {
-    const user = await users.findAll({ raw: true, order: [["id", "DESC"]] });
-    res.json({id:user.id,name:user.name,email:user.email,img:user.img,entityId:user.entityId,createdAt:user.createdAt});
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+router.get("/users",auth.verifyToken,async (req, res) => {
+ 
+    const user =await userService.getAllUser();
+    user.code == 200 ? res.status(user.code).json(user.data) : res.json(user.code).json(user.message)
+
 });
 
 router.post("/login", async (req, res) => {
-  try {
+ 
 
     const { email, password } = req.body;
-
+    const login =await userService.postLogin(email,password )
     
-
-    const user = await users.findOne({ where: { email } });
-  // var data = JSON.stringify(user);
-    //  console.log(data)
-    
-
-    const { email, password } = req.params;
-    
-    
-    const user = await users.findOne({ where: { email, password } });
-
-    if (user) {
-   
-      let senhaCriptografada = user.password
-      const senhaCorrespondente = await bcrypt.compare(password, senhaCriptografada);
-      if (senhaCorrespondente) {
-        res.status(200).json({name:user.name,img:user.img,
-          email:user.email,entityId:user.entityId,createdAt:user.createdAt});
-      } else {
-        res.status(401).json({ error: 'Credenciais inválidas.' });
+      if(login.code==200)
+      {
+        res.status(login.code).json(login.data);
       }
+      
+      else if(login.code==401)
+      {
+        res.status(login.code).json(login.message);
+      }
+      else
+      {
+        res.status(login.code).json(login.message)
+      }
+      
 
-    } else {
-      res.status(401).send("Credenciais inválidas.");
-    }
-  } catch (error) {
-    //res.status(500).json({ error: "Internal Server Error" });
-    res.status(500).json(error)
-  }
 });
 
 router.post("/users", UserValidator.validateUserData, async (req, res) => {
-  try {
-    const { email, password, img = "", entityId, name } = req.body;
-    
-    const salt = await bcrypt.genSalt(10);
-   
-    const senha= await bcrypt.hash(password, salt);
-    
-    const newUser = await users.create({ name, email, password:senha, img, entityId });
-   
-    res.status(200).json({name:`${newUser.name}`,email:`${newUser.email}`,
-    img:`${newUser.img}`,entityId:`${newUser.entityId}`,
-    createdAt:`${newUser.createdAt}`});
+ 
 
-  } catch (error) {
-    res.status(500).json({error:"Internal Server Error!"});
-  }
+   let data;
+   const { email, password, img = "", entityId, name } = data = req.body ;
+   const user = await userService.createUser(data);
+   user==200? res.status(200).json({email,img,entityId,name}):res.status(500).json({error:user})
+
+
 });
 
-router.put("/login",async (req,res)=>
+router.put("/login",auth.verifyToken,async (req,res)=>
 {
 
- 
- try {
-
-  const {email,password}=req.body;
-  
-  const user = await users.findOne({where:{email}})
- // console.log(user)
-  if(user)
-  {
-    const salt = await bcrypt.genSalt(10);
-    const senha= await bcrypt.hash(password, salt);
-
-    const data = await users.update({password:senha},{where: {email:email}}).then(data=>
-      {
-        res.status(200).json({message:"Data updated!"})
-      })
-    
-  }
-  else
-  {
-    res.status(401).json({message:"Crendencias Inválidas."})
-  }
-
-  
- } catch (error) {
-    res.status(500).json({message:"Internal Server Error"})
- }
-
+  let data;
+  const {email,password}= data =req.body;
+  const user = await userService.update(data);
+  user==200? res.status(200).json({message:"Data updated!"}):res.status(401).json({message:user})
 
 })
 
 
-router.get("/users/:id", async (req, res) => {
+router.get("/users/:id",auth.verifyToken, async (req, res) => {
   try {
     const { id } = req.params;
     const user = await users.findOne({ where: { id } });
@@ -121,14 +74,19 @@ router.get("/users/:id", async (req, res) => {
   }
 });
 
-router.delete("/users/:id", async (req, res) => {
-  try {
+router.delete("/users/:id",auth.verifyToken, async (req, res) => {
+
     const { id } = req.params;
-    const deletedUser = await users.destroy({ where: { id } });
-    res.json(deletedUser);
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+    const user = await userService.delete(id)
+    if(user==200)
+    res.status(200).json({message:"Registro eliminado!"});
+    else if(user==500)
+    res.status(500).json({message:"Internal Server Error!"})
+    else
+    res.status(404).json({message:"Utilizador não encontrado!"})
+    
+    
+  
 });
 
 module.exports = router;

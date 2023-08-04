@@ -1,6 +1,7 @@
 const users = require("../database/users");
 const bcrypt = require('bcrypt');
 const authService = require("../services/authService");
+const xss = require('xss')
  class userService
 {
 
@@ -11,9 +12,9 @@ const authService = require("../services/authService");
      
         const salt = await bcrypt.genSalt(10);
    
-        const senha= await bcrypt.hash(data.password, salt);
+        const senha= await bcrypt.hash(xss(data.password), salt);
         
-        const newUser = await users.create({ name:data.name, email:data.email, password:senha, img:data.img, entityId:data.entityId });
+        const newUser = await users.create({ name:xss(data.name), email:xss(data.email), password:senha, img:data.img, entityId:data.entityId });
         
       
         return 200;
@@ -31,10 +32,10 @@ const authService = require("../services/authService");
 
     try {
 
-        const user = await users.findOne({where:{email:data.email}})
+        const user = await users.findOne({where:{email:xss(data.email)}})
         const salt = await bcrypt.genSalt(10);
-        const senha= await bcrypt.hash(data.password, salt);
-        const datas = await users.update({password:senha},{where: {email:data.email}})
+        const senha= await bcrypt.hash(xss(data.password), salt);
+        const datas = await users.update({password:senha},{where: {email:xss(data.email)}})
         return 200;
     
     } catch (error) {
@@ -67,10 +68,11 @@ const authService = require("../services/authService");
  {
     try {
         var dataReturned;
-        const user = await users.findOne({ where: { email } });
+        const user = await users.findOne({ where: { email:xss(email)} });
         
-        if (user) {
+       
         
+        if (user !=null) {
           let senhaCriptografada = user.password
          
           const senhaCorrespondente = await bcrypt.compare(password, senhaCriptografada);
@@ -93,16 +95,17 @@ const authService = require("../services/authService");
 
           } else {
            
-            dataReturned=[{"code":401},{message:'Credenciais inválidas.'}]
+            dataReturned=[{"code":401,"message":'Credenciais inválidas.'}]
             return dataReturned
           }
     
-        } else {
-            dataReturned=[{"code":401},{message:'Credenciais inválidas.'}]
+        } else if(user==null) {
+            console.log("entrou")
+            dataReturned={"code":404,"message":'Credenciais inválidas.'}
             return dataReturned
         }
       } catch (error) {
-        dataReturned=[{"code":500},{message:`Internal Server Error`}]
+        dataReturned={"code":500,"message":`Internal Server Error`}
         return dataReturned
        
        

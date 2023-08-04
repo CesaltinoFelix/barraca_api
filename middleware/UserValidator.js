@@ -8,6 +8,7 @@ class UserValidator {
       if (!email || !password || !name) {
         return res.status(400).json({ error: "Falatando campo obrigatorio" });
       }
+    
 
     
      

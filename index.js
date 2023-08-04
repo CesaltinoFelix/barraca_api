@@ -40,7 +40,7 @@ const limiter = rateLimit({
 
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit:"10mb"}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(express.static('uploads'));
@@ -109,9 +109,10 @@ process.on('SIGTERM', () => {
 });
 
 process.on('uncaughtException', (error, origin) => {
-  console.log(`Ocorreu algum erro! \n Erro : ${error}\n Origem: ${origin}`);
+  console.log(`Ocorreu 1! \n Erro : ${error}\n Origem: ${origin}`);
 });
 
 process.on('unhandledRejection', (error) => {
-  console.log(`Ocorreu algum erro! \nErro:${error}`);
+ 
+ console.log(`Ocorreu 2! \nErro:${error}`);
 });

@@ -5,7 +5,7 @@ const auth = require('../middleware/auth')
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const userService = require("../services/userService");
-
+const xss = require('xss')
 // Route handler using async/await and data validation
 
 router.get("/users",auth.verifyToken,async (req, res) => {
@@ -19,21 +19,23 @@ router.post("/login", async (req, res) => {
  
 
     const { email, password } = req.body;
-    const login =await userService.postLogin(email,password )
-    
+    console.log(xss(email))
+    const login =await userService.postLogin(xss(email),xss(password) )
+      
       if(login.code==200)
       {
         res.status(login.code).json(login.data);
       }
       
-      else if(login.code==401)
+      else if(login.code==404)
       {
-        res.status(login.code).json(login.message);
+        res.status(login.code).json({message:login.message});
       }
-      else
+      else if(login.code==500)
       {
-        res.status(login.code).json(login.message)
+        res.status(login.code).json({message:login.message})
       }
+     
       
 
 });

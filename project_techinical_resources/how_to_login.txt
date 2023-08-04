@@ -1,0 +1,47 @@
+
+
+============= 1- Requisição (Login do usuário)=================
+
+
+
+const data =
+{
+	"email":"regi@regi.com",
+	"password":"regi"	
+};
+
+try {
+  const response = await axios.post(url, data);
+  console.log(response.data); 
+} catch (error) {
+  console.error('Erro na requisição:', error);
+}
+
+
+===================== 2- Resposta do servidor ==================
+
+{
+	"name": "RegiBoy",
+	"img": "",
+	"email": "regi@regi.com",
+	"entityId": 1,
+	"createdAt": "2023-08-03T12:27:48.000Z",
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlZ2lAcmVnaS5jb20iLCJpYXQiOjE2OTExNTM1NTMsImV4cCI6MTY5MTE1NDQ1M30.qhbLuVN31C4SXWQGuN-2uuhF7JXDIQChVIJ44tO_Pyk"
+}
+
+======================= 3- Requisição em outras rotas (devem incluir o token no cabeçalho) ==============================
+
+                                        ----------Exemplo-------------
+
+const url = 'http://localhost:3000/users';
+
+const headers = {
+  'x-acess-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlZ2lAcmVnaS5jb20iLCJpYXQiOjE2OTExNTM1NTMsImV4cCI6MTY5MTE1NDQ1M30.qhbLuVN31C4SXWQGuN-2uuhF7JXDIQChVIJ44tO_Pyk'
+};
+
+try {
+  const response = await get.post(url, { headers });
+  console.log(response.data); 
+} catch (error) {
+  console.error('Erro na requisição:', error);
+}

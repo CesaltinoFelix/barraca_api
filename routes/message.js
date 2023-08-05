@@ -2,8 +2,9 @@ const express = require("express");
 const message = require("../database/message");
 const router = express.Router();
 const { Op, Sequelize } = require('sequelize');
+const auth = require('../middleware/auth')
 
-router.get("/message",(req, res) => {
+router.get("/message",auth.verifyToken,(req, res) => {
     message.findAll({ raw: true, order:[
         ['id','DESC']  
     ]}).then(message => {
@@ -11,7 +12,7 @@ router.get("/message",(req, res) => {
     }); 
 });
 
-router.post("/message_data",(req,res)=>
+router.post("/message_data",auth.verifyToken,(req,res)=>
 {
         const data = req.body.data
     message.findAll(
@@ -37,7 +38,7 @@ router.post("/message_data",(req,res)=>
 
 })
 
-router.get("/message/:id",(req,res)=>
+router.get("/message/:id",auth.verifyToken,(req,res)=>
 {
     const id = req.params.id
     message.findOne({raw:true,where:{id:id}}).then((response)=>
@@ -49,7 +50,7 @@ router.get("/message/:id",(req,res)=>
     })
 }) 
 
-router.put("/message/:id",(req,res)=>
+router.put("/message/:id",auth.verifyToken,(req,res)=>
 {
     const id = req.params.id;
     const{name,nif,email,contact} =req.body;
@@ -75,7 +76,7 @@ router.put("/message/:id",(req,res)=>
    
 })
 
-router.post("/message",(req, res) => {
+router.post("/message",auth.verifyToken,(req, res) => {
 
     var name = req.body.name;
     var email = req.body.email;
@@ -92,7 +93,7 @@ router.post("/message",(req, res) => {
     }); 
 });
 
-router.delete("/message/:id",(req,res)=>
+router.delete("/message/:id",auth.verifyToken,(req,res)=>
 {
 
   var id = req.params.id

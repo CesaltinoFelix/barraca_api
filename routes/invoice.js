@@ -1,9 +1,9 @@
 const express = require("express");
 const invoice = require("../database/invoice");
 const router = express.Router();
+const auth = require('../middleware/auth')
 
-
-router.get("/invoice-user/:id",(req, res) => {
+router.get("/invoice-user/:id",auth.verifyToken,(req, res) => {
     const id = req.params.id
     invoice.findAll({ raw: true, order:[
         ['id','DESC']  
@@ -14,7 +14,7 @@ router.get("/invoice-user/:id",(req, res) => {
 
 
 
-router.post("/invoice",(req, res) => {
+router.post("/invoice",auth.verifyToken,(req, res) => {
 
     const {clientName, nif, invoiceNumber,status, paymentStatus   } = req.body;
  
@@ -29,7 +29,7 @@ router.post("/invoice",(req, res) => {
         res.json(invoice)
     }); 
 });
-router.put("/invoice/:id",(req, res) => {
+router.put("/invoice/:id",auth.verifyToken,(req, res) => {
 
     const {clientName, nif, invoiceNumber,status, paymentStatus   } = req.body;
  
@@ -51,7 +51,7 @@ router.put("/invoice/:id",(req, res) => {
 
 });
 
-router.get("/invoice/:id",(req ,res) => {
+router.get("/invoice/:id",auth.verifyToken,(req ,res) => {
     var id = req.params.id;
     invoice.findOne({
         where: {id: id}
@@ -66,7 +66,7 @@ router.get("/invoice/:id",(req ,res) => {
     });
 })
 
-router.delete("/invoice/:id",(req ,res) => {
+router.delete("/invoice/:id",auth.verifyToken,(req ,res) => {
     var id = req.params.id;
     invoice.destroy({
         where: {id: id}

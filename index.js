@@ -1,4 +1,5 @@
 const express = require("express");
+const rateLimit = require('express-rate-limit');
 const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
@@ -10,6 +11,7 @@ const _ = require('lodash');
 const connection = require("./database/database"); 
 const { once } = require('events');
 
+/*
 async function handler(request, response) {
   try {
     const data = JSON.parse(await once(request, 'data'));
@@ -22,19 +24,27 @@ async function handler(request, response) {
     response.end();
   }
 }
-
+*/
 // enable files upload
 app.use(fileUpload({
   createParentPath: true
 }));
 
-// add other middleware
+// limite de requisições por endereço IP
+
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 15 minutos
+  max: 50, // 100 solicitações a cada 15min (15 minutos)
+});
+
+
+
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit:"10mb"}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(express.static('uploads'));
-
+app.use(limiter)
 // arquivos rotas
 const products = require("./routes/products");
 const uploads = require("./routes/uploads");
@@ -56,11 +66,18 @@ connection
     console.log(msgErro);
   });
 
-// Rotas da plataforma
+// Rotas da plataforma  
+
 app.use("/", products);
 app.use("/", uploads);
 app.use("/", costumers);
+<<<<<<< HEAD
 app.use("/", sales);
+=======
+
+app.use("/",sales);
+
+>>>>>>> 4d0f0a9671acbe4872fa0541950fadfeeced5f9d
 app.use("/", users);
 app.use("/", invoice);
 app.use("/", message);
@@ -96,9 +113,10 @@ process.on('SIGTERM', () => {
 });
 
 process.on('uncaughtException', (error, origin) => {
-  console.log(`Ocorreu algum erro! \n Erro : ${error}\n Origem: ${origin}`);
+  console.log(`Ocorreu 1! \n Erro : ${error}\n Origem: ${origin}`);
 });
 
 process.on('unhandledRejection', (error) => {
-  console.log(`Ocorreu algum erro! \nErro:${error}`);
+ 
+ console.log(`Ocorreu 2! \nErro:${error}`);
 });

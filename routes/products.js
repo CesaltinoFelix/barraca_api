@@ -1,9 +1,9 @@
 const express = require("express");
 const Products = require("../database/products");
 const router = express.Router();
+const auth = require('../middleware/auth')
 
-
-router.get("/products-user/:id",(req, res) => {
+router.get("/products-user/:id",auth.verifyToken,(req, res) => {
     const id = req.params.id
     Products.findAll({ raw: true, order:[
         ['id','DESC']  
@@ -14,7 +14,7 @@ router.get("/products-user/:id",(req, res) => {
 
 
 
-router.post("/product/:id",(req, res) => {
+router.post("/product/:id",auth.verifyToken,(req, res) => {
 
     const {name, price, description = '',barcode = ''} = req.body;
     const img =   'product-box.jpg'
@@ -34,7 +34,7 @@ router.post("/product/:id",(req, res) => {
         res.json(product)
     }); 
 });
-router.put("/product-update/:id",(req, res) => {
+router.put("/product-update/:id",auth.verifyToken,(req, res) => {
 
     const {name, price, description = '', barcode =''  } = req.body;
     const id = req.params.id
@@ -55,7 +55,7 @@ router.put("/product-update/:id",(req, res) => {
 
 });
 
-router.get("/products/:id",(req ,res) => {
+router.get("/products/:id",auth.verifyToken,(req ,res) => {
     var id = req.params.id;
     Products.findOne({
         where: {id: id}
@@ -70,7 +70,7 @@ router.get("/products/:id",(req ,res) => {
     });
 })
 
-router.delete("/products/:id",(req ,res) => {
+router.delete("/products/:id",auth.verifyToken,(req ,res) => {
     var id = req.params.id;
     Products.destroy({
         where: {id: id}

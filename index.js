@@ -71,13 +71,7 @@ connection
 app.use("/", products);
 app.use("/", uploads);
 app.use("/", costumers);
-<<<<<<< HEAD
 app.use("/", sales);
-=======
-
-app.use("/",sales);
-
->>>>>>> 4d0f0a9671acbe4872fa0541950fadfeeced5f9d
 app.use("/", users);
 app.use("/", invoice);
 app.use("/", message);

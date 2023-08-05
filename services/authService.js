@@ -5,7 +5,7 @@ class authService
 
     static generateToken(email)
     {
-       const token = jwt.sign({email},SECRET,{expiresIn:900});
+       const token = jwt.sign({email},SECRET,{expiresIn:14400 });
        return token;
     }
 

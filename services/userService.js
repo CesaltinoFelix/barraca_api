@@ -15,13 +15,13 @@ const xss = require('xss')
         const senha= await bcrypt.hash(xss(data.password), salt);
         
         const newUser = await users.create({ name:xss(data.name), email:xss(data.email), password:senha, img:data.img, entityId:data.entityId });
-        
+        const token = await authService.generateToken(data.email) 
       
-        return 200;
+        return {code:200,token};
         
     } catch (error) {
         
-        return "Internal Server Error";
+        return {message:"Internal Server Error"};
 
     }
 
@@ -48,10 +48,10 @@ const xss = require('xss')
    {
     try {
         
-        const user = await users.findOne({where:{id}})
+        const user = await users.findOne({where:{id:xss(id)}})
         if(user)
         {
-        const deletedUser = await users.destroy({ where: { id } });
+        const deletedUser = await users.destroy({ where: { id:xss(id) } });
          return 200
         }
         else

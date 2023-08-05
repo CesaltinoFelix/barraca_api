@@ -3,23 +3,16 @@ const sales = require("../database/sales");
 const printer = require("./pdf_printer");
 const router = express.Router();
 const auth = require('../middleware/auth')
-
-router.post("/sales",auth.verifyToken, (req, res) => {
-    const { name, price, quantity, img, userId , description, invoiceId = 1,wallet } = req.body
-
-    sales.create({
-        userId: userId,
-        productName: name,
-        price: price,
-        quantity: quantity,
-        description: description,
-        img: img,
-        invoiceId: invoiceId,
-        wallet:wallet
-    }).then((sale)=>{
-        res.json(sale);
-    })
+const salesValidator = require('../middleware/salesValidator')
+const salesService = require('../services/salesService')
+router.post("/sales",auth.verifyToken,salesValidator.validateSalesData ,async (req, res) => {
+   
+    let data;
+    const { name, price, quantity, img, userId , description, invoiceId = 1,wallet } = data = req.body
+    const sale = await salesService.postSale(data) 
+    sale.code==200?res.status(200).json({message:sale.message}):res.status(500).json({Error:sale.message})
 }) 
+
 router.post("/sale-invoice/:codigoFatura",auth.verifyToken, async (req, res) => {
     sales.findAll({
        

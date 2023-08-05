@@ -100,9 +100,13 @@ const xss = require('xss')
           }
     
         } else if(user==null) {
-            console.log("entrou")
+           
             dataReturned={"code":404,"message":'Credenciais inválidas.'}
             return dataReturned
+        }
+        else
+        {
+          return {code:500,message:"Internal Server Error"}
         }
       } catch (error) {
         dataReturned={"code":500,"message":`Internal Server Error`}

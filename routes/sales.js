@@ -28,6 +28,7 @@ router.post("/sale-invoice/:codigoFatura",auth.verifyToken, async (req, res) => 
                 dadosVenda,
             total: dadosVenda.reduce((total, item) => total + item.total, 0)
           };
+          
           minhaImpressora.gerarFatura(dadosFatura, codigoFatura);
           const outputFilename = `./uploads/fatura_${codigoFatura}.pdf`;
         res.json(outputFilename);

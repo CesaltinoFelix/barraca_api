@@ -14,7 +14,7 @@ const xss = require('xss')
    
         const senha= await bcrypt.hash(xss(data.password), salt);
         
-        const newUser = await users.create({ name:xss(data.name), email:xss(data.email), password:senha, img:data.img, entityId:data.entityId });
+        const newUser = await users.create({ name:xss(data.name), email:xss(data.email), password:senha, img:data.img ?? '', entityId:data.entityId });
         
       
         return 200;
@@ -71,19 +71,20 @@ const xss = require('xss')
         const user = await users.findOne({ where: { email:xss(email)} });
         
        
-        
         if (user !=null) {
           let senhaCriptografada = user.password
          
           const senhaCorrespondente = await bcrypt.compare(password, senhaCriptografada);
           if (senhaCorrespondente) {
+          console.log('celson');
+
             const token = await authService.generateToken(user.email) 
            
 
               dataReturned={"code":200,
               "data":
                 { name:user.name,
-                    img:user.img,
+                    img:user.img ?? '',
                 email:user.email,
                 entityId:user.entityId,
                 createdAt:user.createdAt,

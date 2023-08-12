@@ -21,6 +21,7 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     console.log(xss(email))
     const login =await userService.postLogin(xss(email),xss(password) )
+
       
       if(login.code==200)
       {
@@ -40,7 +41,7 @@ router.post("/login", async (req, res) => {
 
 });
 
-router.post("/users", UserValidator.validateUserData, async (req, res) => {
+router.post("/users",  async (req, res) => {
  
 
    let data;

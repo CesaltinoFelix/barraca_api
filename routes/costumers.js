@@ -62,7 +62,7 @@ router.put("/costumers/:id",auth.verifyToken,(req,res)=>
    
 })
 
-router.post("/costumers",auth.verifyToken,(req, res) => {
+router.post("/costumers",(req, res) => {
 
     var name = req.body.name;
     var email = req.body.email;

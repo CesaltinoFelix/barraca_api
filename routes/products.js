@@ -2,82 +2,69 @@ const express = require("express");
 const Products = require("../database/products");
 const router = express.Router();
 const auth = require('../middleware/auth')
+const productsService = require('../services/productsService')
+const productsValidator = require('../middleware/productsValidator')
+router.get("/products-user/:id",auth.verifyToken,async(req, res) => {
 
-router.get("/products-user/:id",auth.verifyToken,(req, res) => {
-    const id = req.params.id
-    Products.findAll({ raw: true, order:[
-        ['id','DESC']  
-    ],  where: {userId: id} }).then(products => {
-           res.json(products);
-    }); 
+  const id = req.params.id
+    
+  const getProductById = await productsService.getProductUserById(id)
+  
+  getProductById.code==200?res.status(200).json(getProductById.data):res.status(500).json({error:getProductById.message})
+   
 });
 
 
 
-router.post("/product/:id",auth.verifyToken,(req, res) => {
+router.post("/product/:id",auth.verifyToken,productsValidator.validateProducts,async (req, res) => {
 
-    const {name, price, description = '',barcode = ''} = req.body;
+    let data;
+    const {name, price, description = '',barcode = ''} = data = req.body;
     const img =   'product-box.jpg'
     console.log(req.body);
     const id = req.params.id
+    const insertProduct = await productsService.CreateProduct(data,id,img)
+    insertProduct.code==200?res.status(200).json(insertProduct.data):res.status(500).json({error:insertProduct.message})
  
-    Products.create({
-        userId: id,
-        name: name,
-        barcode: barcode,
-        price: price,
-        description: description,
-        img: img
-       
-    }).then((product) => {
-
-        res.json(product)
-    }); 
-});
-router.put("/product-update/:id",auth.verifyToken,(req, res) => {
-
-    const {name, price, description = '', barcode =''  } = req.body;
-    const id = req.params.id
-
-     Products.update({ 
-        name: name,
-        price: price,
-        description: description,
-        barcode: barcode
-    }, {
-        where: {
-          id: id
-        }
-      }).then((product) => {
-
-        res.json(product)
-    }); 
-
-});
-
-router.get("/products/:id",auth.verifyToken,(req ,res) => {
-    var id = req.params.id;
-    Products.findOne({
-        where: {id: id}
-    }).then(Products => {
-        if(Products != undefined){ 
-
-            res.json(Products);
-
-        }else{ // Dados não encontrado
-            res.redirect("/");
-        }
-    });
 })
 
-router.delete("/products/:id",auth.verifyToken,(req ,res) => {
-    var id = req.params.id;
-    Products.destroy({
-        where: {id: id}
-    }).then((product) => {
+router.put("/product-update/:id",auth.verifyToken,productsValidator.validateProducts,async(req, res) => {
 
-        res.json(product)
-    }); 
+   
+    const {name, price, description = '', barcode =''  } = req.body;
+    const id = req.params.id
+    const updateProduct = await productsService.productUpdate(data,id);
+    updateProduct.code==200?res.status(200).json({message:updateProduct.message}):res.status(500).json({error:updateProduct.error})
+  
+
+});
+
+router.get("/products/:id",auth.verifyToken,async(req ,res) => {
+    var id = req.params.id;
+    
+    const getProduct = await productsService.getProductById(id)
+    
+    if(getProduct.code==200)
+    {
+        res.status(200).json(getProduct.data)
+    }
+    else if (getProduct.code==404)
+    {
+        res.redirect("/");
+    }
+    else
+    {
+        res.status(500).json({error:"Internal Server Error"})
+
+    }
+})
+
+router.delete("/products/:id",auth.verifyToken,async(req ,res) => {
+    
+    var id = req.params.id;
+    const del =await productsService.deleteProduct(id)   
+    del.code=200?res.status(200).json({message:"produto eliminado!"}):res.status(500).json({error:"Internal server error"})
+   
 })
 
 

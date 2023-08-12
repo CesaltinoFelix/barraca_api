@@ -1,119 +1,57 @@
 const express = require("express");
-const message = require("../database/message");
+const messageService = require("../services/messageService");
+const  messageValidator = require('../middleware/messageValidator')
 const router = express.Router();
-const { Op, Sequelize } = require('sequelize');
+
 const auth = require('../middleware/auth')
 
-router.get("/message",auth.verifyToken,(req, res) => {
-    message.findAll({ raw: true, order:[
-        ['id','DESC']  
-    ]}).then(message => {
-           res.json(message);
-    }); 
+router.get("/message",auth.verifyToken,async (req, res) => {
+    
+         const post = await messageService.getAllMessage()
+         post.code==200?res.status(200).json(post.data):res.status(500).json({error:post.data})
 });
 
-router.post("/message_data",auth.verifyToken,(req,res)=>
+router.post("/message_data",auth.verifyToken,async(req,res)=>
 {
-        const data = req.body.data
-    message.findAll(
-        {
-            where:
-            {
-            createdAt:
-            {
-                [Op.eq]: new Date(data)
-            }
-            
-            },
-            raw:true
-        }).then((response)=>
-        {
-            res.json(response)
-        
-        }).catch((error)=>
-        {
-            res.json(error)
-        })
-
+         const data = req.body.data
+         const post = await messageService.postMessageData(data)
+         post.code==200?res.status(200).json(post.data):res.status(500).json({error:post.data})
 
 })
 
-router.get("/message/:id",auth.verifyToken,(req,res)=>
+router.get("/message/:id",auth.verifyToken,async(req,res)=>
 {
     const id = req.params.id
-    message.findOne({raw:true,where:{id:id}}).then((response)=>
-    {
-        res.json(response)
-    }).catch((error)=>
-    {
-        console.log(error)
-    })
+    const get = await messageService.getMessageById(id)
+    get.code==200?res.status(200).json(get.data):res.status(500).json({error:"Internal Server Error"})
+    
 }) 
 
-router.put("/message/:id",auth.verifyToken,(req,res)=>
+router.put("/message/:id",auth.verifyToken,async(req,res)=>
 {
+    let data;
     const id = req.params.id;
-    const{name,nif,email,contact} =req.body;
-   
-    message.update(
-        {
-            name: name,
-            nif: nif,
-            email: email,
-            contact: contact
-        },{
-            where:
-            {
-                id:id
-
-            }
-        
-        }).then((message)=>
-        {
-            res.json(message)
-
-        })
-   
+    const{name,nif,email,contact}=data=req.body;
+    const put = await messageService.putMessageById(data)
+    get.code==200?res.status(200).json({message:"Updated"}):res.status(500).json({error:"Internal Server Error"})
 })
 
-router.post("/message",auth.verifyToken,(req, res) => {
+router.post("/message",auth.verifyToken,messageValidator.validateMessage ,async(req, res) => {
 
-    var name = req.body.name;
-    var email = req.body.email;
-    var mensagem = req.body.message;
+    
+    let data = req.body;
+    const post = await messageService.postMessage(data)
+    get.code==200?res.status(200).json({message:"Data Saved!"}):res.status(500).json({error:"Internal Server Error"})
 
-
-    message.create({
-        name: name,
-        email: email,
-        message: mensagem
-        
-    }).then((message) => {
-        res.json(message)
-    }); 
 });
 
-router.delete("/message/:id",auth.verifyToken,(req,res)=>
+router.delete("/message/:id",auth.verifyToken,async(req,res)=>
 {
 
   var id = req.params.id
-  
-  message.destroy({
-    where :{id:id}
-  }).then((response)=>
-  {
-    res.json(response)
-  }).catch((error)=>
-  {
-    console.log(error)
-  })
-
-
+  const post = await messageService.deleteMessage(id)
+  get.code==200?res.status(200).json({message:"Data deleted!"}):res.status(500).json({error:"Internal Server Error"})
 
 })
-,
-
-
-
 
 module.exports = router;

@@ -47,7 +47,8 @@ router.post("/users",  async (req, res) => {
    let data;
    const { email, password, img = "", entityId, name } = data = req.body ;
    const user = await userService.createUser(data);
-   user==200? res.status(200).json({email,img,entityId,name}):res.status(500).json({error:user})
+   const token= user.token
+   user.code==200? res.status(200).json({email,img,entityId,name,token}):res.status(500).json({error:user})
 
 
 });
